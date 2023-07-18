@@ -1,20 +1,19 @@
 const fs = require("fs");
+const request = require("request");
 
 module.exports = {
   pwd: function () {
-    // process.stdin.on("data", function (data) {
     let pwd = process.argv.toString(); // Devuelve la ruta de nuestros directorios
     process.stdout.write(pwd); // Esto devuelve lo que se pide (pwd)
     process.stdout.write("\nprompt > "); // Crea de nuevo el prompt > para que el usuario pueda seguir interactuando
   },
   date: function () {
-    // process.stdin.on("data", function (data) {
     let date = new Date().toString();
     process.stdout.write(date);
     process.stdout.write("\nprompt > ");
   },
   ls: function () {
-    let ls = fs.readdir(".", function (err, files) {
+    fs.readdir(".", function (err, files) {
       if (err) throw err;
       files.forEach(function (file) {
         process.stdout.write(file.toString() + "\n");
@@ -56,6 +55,13 @@ module.exports = {
         process.stdout.write(firstFiveLines + "\n");
         process.stdout.write("prompt > ");
       });
+    });
+  },
+  curl: function (url) {
+    request(url.toString(), (err, response, body) => {
+      if (err) throw err;
+      process.stdout.write(body + "\n");
+      process.stdout.write("prompt > ");
     });
   },
 };
